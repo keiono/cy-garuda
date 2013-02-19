@@ -14,13 +14,10 @@ public class CyActivator extends AbstractCyActivator {
 
 	public void start(BundleContext bc) {
 
-		CyApplicationManager cyApplicationManager = getService(bc,
-				CyApplicationManager.class);
+		CyApplicationManager cyApplicationManager = getService(bc, CyApplicationManager.class);
 
-		MenuAction action = new MenuAction(cyApplicationManager,
-				"Connect to Garuda");
-		GarudaConnect connectAction = new GarudaConnect(cyApplicationManager,
-				"Register Garuda");
+		MenuAction action = new MenuAction(cyApplicationManager, "Connect to Garuda");
+		GarudaConnect connectAction = new GarudaConnect(cyApplicationManager, "Register Garuda");
 
 		Properties properties = new Properties();
 
