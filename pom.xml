@@ -87,7 +87,7 @@
 						<Private-Package>${bundle.namespace}.internal.*</Private-Package>
 						<!-- <Private-Package>${bundle.namespace}.*, jp.sbi.garuda.*</Private-Package> -->
 						<Bundle-Activator>${bundle.namespace}.internal.CyActivator</Bundle-Activator>
-						<Embed-Dependency>*;scope=!provided;groupId=!org.cytoscape</Embed-Dependency>
+						<Embed-Dependency>garuda-csr,garuda-backend,*;scope=!provided;groupId=!org.cytoscape</Embed-Dependency>
 						<Embed-Transitive>true</Embed-Transitive>
 						<Import-Package>*;resolution:=optional</Import-Package>
 					</instructions>
