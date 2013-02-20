@@ -31,10 +31,13 @@ public class LoadDataHandler implements GarudaEventHandler {
 		
 		Gadget theOriginGadget = (Gadget) event.getFirstProperty();
 		String theFilePath = (String) event.getSecondProperty();
+
 		File sbml = new File(theFilePath);
 
 		final TaskIterator ti = loadNetworkTF.createTaskIterator(sbml);
 		taskManager.execute(ti);
+		
+		logger.info("Update test 2");
 	}
 
 	@Override

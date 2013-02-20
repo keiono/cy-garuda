@@ -4,9 +4,10 @@ import java.util.Properties;
 
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
 import jp.sbi.garuda.platform.commons.net.GarudaConnectionNotInitializedException;
+import lu.lcsb.garuda.GarudaEventHandler;
+import lu.lcsb.garuda.internal.handlers.LoadDataHandler;
 import lu.lcsb.garuda.internal.task.RegisterGarudaTaskFactory;
 
-import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.application.CyVersion;
 import org.cytoscape.property.CyProperty;
 import org.cytoscape.service.util.AbstractCyActivator;
@@ -41,7 +42,8 @@ public class CyActivator extends AbstractCyActivator {
 		final GarudaLauncher garudaLauncher = new GarudaLauncher(version);
 		final GarudaClientBackend backendGaurda = garudaLauncher.getClientBackend();
 
-		backendGaurda.addGarudaChangeListener(new GarudaChangeListener(backendGaurda, loadNetworkTF, taskManager));
+		final GarudaChangeListener changeListener = new GarudaChangeListener(backendGaurda, loadNetworkTF, taskManager);
+		backendGaurda.addGarudaChangeListener(changeListener);
 
 		try {
 			backendGaurda.initialize();
@@ -56,6 +58,12 @@ public class CyActivator extends AbstractCyActivator {
 			taskManager.execute(registerGarudaTaskFactory.createTaskIterator());
 			props.setProperty(GARUDA_REGISTERED, "true");
 		}
-
+		
+		// Create handlers
+		GarudaEventHandler loadDataHandler = new LoadDataHandler(loadNetworkTF, taskManager);
+		registerAllServices(bc, loadDataHandler, new Properties());
+		
+		registerServiceListener(bc,changeListener,"registerHandler","deregisterHandler", GarudaEventHandler.class);
+		
 	}
 }

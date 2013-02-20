@@ -58,6 +58,14 @@ public class GarudaChangeListener implements PropertyChangeListener {
 			final GarudaBackendPropertyChangeEvent garudaPropertyEvt = (GarudaBackendPropertyChangeEvent) evt;
 
 			logger.info("Received Property Change Call");
+			
+			final GarudaEventHandler handler = getHandler(garudaPropertyEvt.getPropertyName());
+			if(handler == null) {
+				logger.warn("Could not find handler.");
+				return;
+			} else {
+				handler.handleEvent(garudaPropertyEvt);
+			}
 
 			// Handle Error Messages that will be sent from the Core or the
 			// Backend
@@ -102,19 +110,6 @@ public class GarudaChangeListener implements PropertyChangeListener {
 				System.out.println(garudaPropertyEvt.getFirstProperty().toString());
 			}
 
-			// Handle the arrival of incoming data from another gadget through
-			// the Core
-			if (garudaPropertyEvt.getPropertyName().equals(GarudaClientBackend.LOAD_DATA_PROPERTY_CHANGE_ID)) {
-				logger.info("Got Event from Garuda: " + garudaPropertyEvt.getFirstProperty().toString());
-				Gadget theOriginGadget = (Gadget) garudaPropertyEvt.getFirstProperty();
-				String theFilePath = (String) garudaPropertyEvt.getSecondProperty();
-				File sbml = new File(theFilePath);
-
-				final TaskIterator ti = loadNetworkTF.createTaskIterator(sbml);
-				taskManager.execute(ti);
-
-				// rest of code to handle incoming file
-			}
 
 			// Handle the request for the loading of a gadget inside this gadget
 			// (plugin loading)
