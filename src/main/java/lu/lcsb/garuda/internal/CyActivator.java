@@ -3,6 +3,7 @@ package lu.lcsb.garuda.internal;
 import java.util.Properties;
 
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
+import jp.sbi.garuda.platform.commons.net.GarudaConnectionNotInitializedException;
 import lu.lcsb.garuda.internal.task.RegisterGarudaTaskFactory;
 
 import org.cytoscape.application.CyApplicationManager;
@@ -12,8 +13,12 @@ import org.cytoscape.service.util.AbstractCyActivator;
 import org.cytoscape.work.TaskFactory;
 import org.cytoscape.work.swing.DialogTaskManager;
 import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CyActivator extends AbstractCyActivator {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CyActivator.class);
 
 	private static final String GARUDA_REGISTERED = "garuda.registered";
 
@@ -35,18 +40,21 @@ public class CyActivator extends AbstractCyActivator {
 		final GarudaLauncher garudaLauncher = new GarudaLauncher(version);
 		final GarudaClientBackend backendGaurda = garudaLauncher.getClientBackend();
 
+		backendGaurda.addGarudaChangeListener(new GarudaChangeListener(backendGaurda));
+
+		try {
+			backendGaurda.initialize();
+		} catch (GarudaConnectionNotInitializedException err) {
+			logger.error("Could not initialize GarudaClientBackend.", err);
+		}
+		
 		final Properties props = cytoscapePropertiesServiceRef.getProperties();
 		final String isRegistered = props.getProperty(GARUDA_REGISTERED);
 		if (isRegistered == null) {
 			final TaskFactory registerGarudaTaskFactory = new RegisterGarudaTaskFactory(backendGaurda);
 			taskManager.execute(registerGarudaTaskFactory.createTaskIterator());
 			props.setProperty(GARUDA_REGISTERED, "true");
-
 		}
 
-//		final GarudaRegister connectAction = new GarudaRegister(cyApplicationManager, "Register Garuda", backendGaurda,
-//				taskManager);
-//
-//		registerAllServices(bc, connectAction, new Properties());
 	}
 }

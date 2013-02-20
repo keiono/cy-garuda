@@ -32,15 +32,7 @@ public class RegisterGarudaTask extends AbstractTask {
 	@Override
 	public void run(TaskMonitor taskMonitor) throws Exception {
 		System.out.println("Cytoscape executable = " + file.toString());
-				
-		try {
-			backend.initialize();
-		} catch (GarudaConnectionNotInitializedException err) {
-			taskMonitor.setStatusMessage("Could not initialize GarudaClientBackend.");
-		}
 		
-		backend.addGarudaChangeListener(new GarudaChangeListener());
-
 		try {
 			backend.registerGadgetToGaruda("open " + file.toString());
 		} catch (NetworkException e1) {
