@@ -16,15 +16,12 @@ public class CyActivator extends AbstractCyActivator {
 
 		CyApplicationManager cyApplicationManager = getService(bc, CyApplicationManager.class);
 
-		MenuAction action = new MenuAction(cyApplicationManager, "Connect to Garuda");
-		GarudaConnect connectAction = new GarudaConnect(cyApplicationManager, "Register Garuda");
+		//MenuAction action = new MenuAction(cyApplicationManager, "Connect to Garuda");
+		GarudaRegister connectAction = new GarudaRegister(cyApplicationManager, "Register Garuda");
 
 		Properties properties = new Properties();
 
-		// JOptionPane.showMessageDialog(null, "Connecting to Garuda...");
-
-		registerAllServices(bc, action, properties);
+		//registerAllServices(bc, action, properties);
 		registerAllServices(bc, connectAction, properties);
 	}
-
 }
