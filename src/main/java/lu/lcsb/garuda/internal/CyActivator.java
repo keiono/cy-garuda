@@ -10,6 +10,7 @@ import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.application.CyVersion;
 import org.cytoscape.property.CyProperty;
 import org.cytoscape.service.util.AbstractCyActivator;
+import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
 import org.cytoscape.work.TaskFactory;
 import org.cytoscape.work.swing.DialogTaskManager;
 import org.osgi.framework.BundleContext;
@@ -30,17 +31,17 @@ public class CyActivator extends AbstractCyActivator {
 	public void start(BundleContext bc) {
 
 		// Service imports
-		final CyApplicationManager cyApplicationManager = getService(bc, CyApplicationManager.class);
 		final CyVersion version = getService(bc, CyVersion.class);
 		final DialogTaskManager taskManager = getService(bc, DialogTaskManager.class);
 		final CyProperty<Properties> cytoscapePropertiesServiceRef = getService(bc, CyProperty.class,
 				"(cyPropertyName=cytoscape3.props)");
+		final LoadNetworkFileTaskFactory loadNetworkTF = getService(bc, LoadNetworkFileTaskFactory.class);
 
 		// Garuda service objects
 		final GarudaLauncher garudaLauncher = new GarudaLauncher(version);
 		final GarudaClientBackend backendGaurda = garudaLauncher.getClientBackend();
 
-		backendGaurda.addGarudaChangeListener(new GarudaChangeListener(backendGaurda));
+		backendGaurda.addGarudaChangeListener(new GarudaChangeListener(backendGaurda, loadNetworkTF, taskManager));
 
 		try {
 			backendGaurda.initialize();

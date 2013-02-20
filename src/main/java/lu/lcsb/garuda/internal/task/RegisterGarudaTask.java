@@ -6,7 +6,6 @@ import jp.sbi.garuda.client.backend.BackendNotInitializedException;
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
 import jp.sbi.garuda.platform.commons.exception.NetworkException;
 import jp.sbi.garuda.platform.commons.net.GarudaConnectionNotInitializedException;
-import lu.lcsb.garuda.internal.GarudaChangeListener;
 
 import org.cytoscape.work.AbstractTask;
 import org.cytoscape.work.ProvidesTitle;
