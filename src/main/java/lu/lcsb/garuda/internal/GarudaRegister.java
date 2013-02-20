@@ -7,16 +7,17 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import javax.swing.JOptionPane;
-
 import jp.sbi.garuda.client.backend.BackendNotInitializedException;
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
 import jp.sbi.garuda.client.backend.listeners.GarudaBackendPropertyChangeEvent;
 import jp.sbi.garuda.platform.commons.exception.NetworkException;
 import jp.sbi.garuda.platform.commons.net.GarudaConnectionNotInitializedException;
+import lu.lcsb.garuda.internal.task.RegisterGarudaTaskFactory;
 
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.application.swing.AbstractCyAction;
+import org.cytoscape.work.TaskFactory;
+import org.cytoscape.work.swing.DialogTaskManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,22 +28,28 @@ import org.slf4j.LoggerFactory;
 public class GarudaRegister extends AbstractCyAction implements PropertyChangeListener {
 
 	private static final Logger logger = LoggerFactory.getLogger(GarudaRegister.class);
-
 	private static final long serialVersionUID = 5992031723836564429L;
 
 	private final GarudaClientBackend backend;
 
+	private final DialogTaskManager taskManager;
+
 	public GarudaRegister(CyApplicationManager cyApplicationManager, final String menuTitle,
-			final GarudaClientBackend backendGaurda) {
+			final GarudaClientBackend backendGaurda, final DialogTaskManager taskManager) {
 		super(menuTitle, cyApplicationManager, null, null);
 		this.backend = backendGaurda;
+		this.taskManager = taskManager;
+
 		setPreferredMenu("Tools");
 	}
 
 	public void actionPerformed(ActionEvent e) {
 
 		// Write your own function here.
-		JOptionPane.showMessageDialog(null, "Registering Cytoscape-Garuda");
+		logger.info("Registring CyGaruda...");
+
+		
+
 		backend.addGarudaChangeListener(this);
 		try {
 			backend.initialize();
@@ -62,7 +69,6 @@ public class GarudaRegister extends AbstractCyAction implements PropertyChangeLi
 		command = command.substring(1);
 
 		String os_name = System.getProperty("os.name").toLowerCase();
-		;
 
 		if (os_name.indexOf("mac") >= 0) {
 			command = "open \"/" + command + "\"";
@@ -76,13 +82,10 @@ public class GarudaRegister extends AbstractCyAction implements PropertyChangeLi
 		try {
 			backend.registerGadgetToGaruda(command);
 		} catch (NetworkException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (BackendNotInitializedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (GarudaConnectionNotInitializedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
