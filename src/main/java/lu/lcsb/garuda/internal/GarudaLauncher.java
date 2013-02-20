@@ -1,6 +1,5 @@
 package lu.lcsb.garuda.internal;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +32,6 @@ public class GarudaLauncher {
 	}
 
 	private void init() {
-		String command = GarudaLauncher.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
-		String folder = new File(command).getParent() + "/";
 
 		outffs = new ArrayList<FileFormat>();
 		outffs.add(new FileFormat("xml", "sbml"));
@@ -53,17 +49,11 @@ public class GarudaLauncher {
 		description = "TSA Description";
 		screenshots = new ArrayList<String>();
 
-		ICON_PATH = folder + "cySmall.png";
-		screenshots.add(folder + "cyGar_ss1.png");
+		ICON_PATH = GarudaLauncher.class.getClassLoader().getResource("/" + SOFTWARE_ID +"/icons/cySmall.png").toString();
+		screenshots.add(GarudaLauncher.class.getClassLoader().getResource("/" + SOFTWARE_ID +"/snapshot/cyGar_ss1.png").toString());
 		// screenshots.add(folder + "Screen2.png");
 		// screenshots.add(folder + "Screen3.png");
 
-		/*
-		 * try { backendGaurda = new GarudaClientBackend(SOFTWARE_ID,
-		 * SOFTWARE_NAME, ICON_PATH, outffs, inffs, categories, provider,
-		 * description, screenshots); } catch (NetworkException e) {
-		 * e.printStackTrace(); }
-		 */
 	}
 
 	final GarudaClientBackend getClientBackend() {
