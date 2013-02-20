@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Gadget>
+    <UUID>ea2f21c0-7a3c-11e2-b92a-0800200c9a66</UUID>
+    <Name>cyGaruda</Name>
+    <LaunchCommand>cmd.exe /c start	"C:\Users\christophe.trefois\workspace\Cyto3_AppDev\target\cytoscape.bat"</LaunchCommand>
+    <IconPaths>
+        <Icon32Path>icons/cySmall.png</Icon32Path>
+    </IconPaths>
+    <Snapshots>
+        <SnapshotPath>snapshot/cyGar_ss1.png</SnapshotPath>
+    </Snapshots>
+    <Categories>
+        <Category>Analytics</Category>
+    </Categories>
+    <Provider>LCSB</Provider>
+    <Description>Cytoscape - Garuda Bridge</Description>
+    <LoadableKeys>
+        <InputFileFormat>
+            <FileExtension>txt</FileExtension>
+            <FileFormat>genelist</FileFormat>
+        </InputFileFormat>
+		<InputFileFormat>
+            <FileExtension>xml</FileExtension>
+            <FileFormat>sbml</FileFormat>
+        </InputFileFormat>
+        <OutputFileFormat>
+            <FileExtension>txt</FileExtension>
+            <FileFormat>txt</FileFormat>
+        </OutputFileFormat>
+		<OutputFileFormat>
+            <FileExtension>xml</FileExtension>
+            <FileFormat>sbml</FileFormat>
+        </OutputFileFormat>
+    </LoadableKeys>
+    <LaunchEnv>
+        <Id>f22aa6a2-beff-4487-b838-03b8275a4361</Id>
+    </LaunchEnv>
+</Gadget>
