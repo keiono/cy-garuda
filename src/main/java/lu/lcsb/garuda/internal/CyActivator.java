@@ -2,6 +2,8 @@ package lu.lcsb.garuda.internal;
 
 import java.util.Properties;
 
+import jp.sbi.garuda.client.backend.GarudaClientBackend;
+
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.service.util.AbstractCyActivator;
 import org.osgi.framework.BundleContext;
@@ -12,16 +14,20 @@ public class CyActivator extends AbstractCyActivator {
 		super();
 	}
 
+	@Override
 	public void start(BundleContext bc) {
 
-		CyApplicationManager cyApplicationManager = getService(bc, CyApplicationManager.class);
+		// Service imports
+		final CyApplicationManager cyApplicationManager = getService(bc, CyApplicationManager.class);
+
+		// Garuda service objects
+		final GarudaLauncher garudaLauncher = new GarudaLauncher();
+		final GarudaClientBackend backendGaurda = garudaLauncher.getClientBackend();
 
 		//MenuAction action = new MenuAction(cyApplicationManager, "Connect to Garuda");
-		GarudaRegister connectAction = new GarudaRegister(cyApplicationManager, "Register Garuda");
-
-		Properties properties = new Properties();
+		final GarudaRegister connectAction = new GarudaRegister(cyApplicationManager, "Register Garuda", backendGaurda);
 
 		//registerAllServices(bc, action, properties);
-		registerAllServices(bc, connectAction, properties);
+		registerAllServices(bc, connectAction, new Properties());
 	}
 }

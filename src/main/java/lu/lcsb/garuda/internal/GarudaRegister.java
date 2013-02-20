@@ -15,66 +15,64 @@ import jp.sbi.garuda.client.backend.listeners.GarudaBackendPropertyChangeEvent;
 import jp.sbi.garuda.platform.commons.exception.NetworkException;
 import jp.sbi.garuda.platform.commons.net.GarudaConnectionNotInitializedException;
 
-import org.apache.log4j.Logger;
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.application.swing.AbstractCyAction;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Creates a new menu item under Apps menu section.
- *
+ * 
  */
 public class GarudaRegister extends AbstractCyAction implements PropertyChangeListener {
 
-	private static final Logger LOG = Logger.getLogger(GarudaClientBackend.class);
+	private static final Logger logger = LoggerFactory.getLogger(GarudaRegister.class);
+
 	private static final long serialVersionUID = 5992031723836564429L;
 
-	public GarudaRegister(CyApplicationManager cyApplicationManager, final String menuTitle) {
-		
+	private final GarudaClientBackend backend;
+
+	public GarudaRegister(CyApplicationManager cyApplicationManager, final String menuTitle,
+			final GarudaClientBackend backendGaurda) {
 		super(menuTitle, cyApplicationManager, null, null);
-		setPreferredMenu("Garuda");
-		
+		this.backend = backendGaurda;
+		setPreferredMenu("Tools");
 	}
 
 	public void actionPerformed(ActionEvent e) {
 
 		// Write your own function here.
 		JOptionPane.showMessageDialog(null, "Registering Cytoscape-Garuda");
-		GarudaLauncher garudaLauncher = GarudaLauncher.INSTANCE;
-		GarudaClientBackend backend = garudaLauncher.getBackend();
 		backend.addGarudaChangeListener(this);
 		try {
 			backend.initialize();
 		} catch (GarudaConnectionNotInitializedException err) {
-			err.printStackTrace();
+			logger.error("Could not initialize GarudaClientBackend.", err);
 		}
-		
-        
-    	String command = GarudaRegister.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-    	String folder = new File ( command ).getParent() + "/" ;
-    	
-    	
-    	try {
-			command =URLDecoder.decode(command,"UTF-8");
+
+		String command = GarudaRegister.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		String folder = new File(command).getParent() + "/";
+
+		try {
+			command = URLDecoder.decode(command, "UTF-8");
 		} catch (UnsupportedEncodingException er) {
 			er.printStackTrace();
 		}
-    	
-    	command = command.substring(1) ;
-        
-        String os_name = System.getProperty("os.name").toLowerCase();;
-        
-		
-		if ( os_name.indexOf("mac") >= 0) {
-			command = "open \"/" + command +"\"";
+
+		command = command.substring(1);
+
+		String os_name = System.getProperty("os.name").toLowerCase();
+		;
+
+		if (os_name.indexOf("mac") >= 0) {
+			command = "open \"/" + command + "\"";
+		} else {
+			command = "cmd /c start javaw.exe -jar \"" + command + "\"";
 		}
-		else {
-			command = "cmd /c start javaw.exe -jar \"" + command + "\"" ;
-		}
-		
+
 		command = "cmd.exe /c start	\"C:/Users/christophe.trefois/workspace/Cyto3_AppDev/target/cytoscape.bat\"";
-		
-		System.out.println ( folder ) ;
+
+		System.out.println(folder);
 		try {
 			backend.registerGadgetToGaruda(command);
 		} catch (NetworkException e1) {
