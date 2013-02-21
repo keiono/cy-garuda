@@ -7,6 +7,7 @@ import jp.sbi.garuda.platform.commons.net.GarudaConnectionNotInitializedExceptio
 import lu.lcsb.garuda.GarudaEventHandler;
 import lu.lcsb.garuda.internal.handlers.ConnectionEstablishedHandler;
 import lu.lcsb.garuda.internal.handlers.LoadDataHandler;
+import lu.lcsb.garuda.internal.handlers.LoadGadgetHandler;
 import lu.lcsb.garuda.internal.task.RegisterGarudaTaskFactory;
 
 import org.cytoscape.application.CyVersion;
@@ -63,9 +64,11 @@ public class CyActivator extends AbstractCyActivator {
 		// Create handlers
 		GarudaEventHandler loadDataHandler = new LoadDataHandler(loadNetworkTF, taskManager);
 		GarudaEventHandler connectionHandler = new ConnectionEstablishedHandler(loadNetworkTF, taskManager);
+		GarudaEventHandler loadGadgetHandler = new LoadGadgetHandler(taskManager);
 		
 		registerAllServices(bc, loadDataHandler, new Properties());
 		registerAllServices(bc, connectionHandler, new Properties());
+		registerAllServices(bc, loadGadgetHandler, new Properties());
 		
 		registerServiceListener(bc,changeListener,"registerHandler","deregisterHandler", GarudaEventHandler.class);
 		

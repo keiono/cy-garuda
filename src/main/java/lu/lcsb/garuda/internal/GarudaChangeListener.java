@@ -105,13 +105,13 @@ public class GarudaChangeListener implements PropertyChangeListener {
 
 			// Handle the request for the loading of a gadget inside this gadget
 			// (plugin loading)
-			if (garudaPropertyEvt.getPropertyName().equals(GarudaClientBackend.LOAD_GADGET_PROPERTY_CHANGE_ID)) {
-				System.out.println(garudaPropertyEvt.getFirstProperty().toString());
-				Gadget loadableGadget = (Gadget) garudaPropertyEvt.getFirstProperty();
-				String launchPathofGadget = (String) garudaPropertyEvt.getSecondProperty();
-
-				// rest of code to handle the loading of gadget
-			}
+//			if (garudaPropertyEvt.getPropertyName().equals(GarudaClientBackend.LOAD_GADGET_PROPERTY_CHANGE_ID)) {
+//				System.out.println(garudaPropertyEvt.getFirstProperty().toString());
+//				Gadget loadableGadget = (Gadget) garudaPropertyEvt.getFirstProperty();
+//				String launchPathofGadget = (String) garudaPropertyEvt.getSecondProperty();
+//
+//				// rest of code to handle the loading of gadget
+//			}
 
 			// Handle the case that the registration process has some kind of
 			// error
