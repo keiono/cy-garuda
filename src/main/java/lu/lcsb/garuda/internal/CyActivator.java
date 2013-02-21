@@ -5,9 +5,16 @@ import java.util.Properties;
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
 import jp.sbi.garuda.platform.commons.net.GarudaConnectionNotInitializedException;
 import lu.lcsb.garuda.GarudaEventHandler;
+import lu.lcsb.garuda.internal.handlers.CompatibleGadgetsHandler;
 import lu.lcsb.garuda.internal.handlers.ConnectionEstablishedHandler;
+import lu.lcsb.garuda.internal.handlers.GadgetRegistrationSuccessHandler;
 import lu.lcsb.garuda.internal.handlers.LoadDataHandler;
 import lu.lcsb.garuda.internal.handlers.LoadGadgetHandler;
+import lu.lcsb.garuda.internal.handlers.errors.ConnectionNotInitializedHandler;
+import lu.lcsb.garuda.internal.handlers.errors.GadgetRegistrationErrorHandler;
+import lu.lcsb.garuda.internal.handlers.errors.GarudaCoreConnTerminatedHandler;
+import lu.lcsb.garuda.internal.handlers.errors.GarudaCoreErrorHandler;
+import lu.lcsb.garuda.internal.handlers.errors.SendDataErrorHandler;
 import lu.lcsb.garuda.internal.task.RegisterGarudaTaskFactory;
 
 import org.cytoscape.application.CyVersion;
@@ -63,12 +70,29 @@ public class CyActivator extends AbstractCyActivator {
 		
 		// Create handlers
 		GarudaEventHandler loadDataHandler = new LoadDataHandler(loadNetworkTF, taskManager);
-		GarudaEventHandler connectionHandler = new ConnectionEstablishedHandler(loadNetworkTF, taskManager);
+
+		GarudaEventHandler connectionHandler = new ConnectionEstablishedHandler(taskManager);
 		GarudaEventHandler loadGadgetHandler = new LoadGadgetHandler(taskManager);
+		GarudaEventHandler connectionNotInitHandler = new ConnectionNotInitializedHandler(taskManager);
+		GarudaEventHandler gadgetRegSuccessHandler = new GadgetRegistrationSuccessHandler(taskManager);
 		
+		GarudaEventHandler gadgetRegFailedHandler = new GadgetRegistrationErrorHandler(taskManager, backendGaurda);
+		GarudaEventHandler compatibleGadgetsHandler = new CompatibleGadgetsHandler(taskManager, backendGaurda);
+		GarudaEventHandler sendDataErrorHandler = new SendDataErrorHandler(taskManager, backendGaurda);
+		GarudaEventHandler garudaCoreErrorHandler = new GarudaCoreErrorHandler(taskManager, backendGaurda);
+		GarudaEventHandler garudaCoreConnTerminHandler = new GarudaCoreConnTerminatedHandler(taskManager, backendGaurda);
+		
+		// Register all services as OSGi service
 		registerAllServices(bc, loadDataHandler, new Properties());
 		registerAllServices(bc, connectionHandler, new Properties());
 		registerAllServices(bc, loadGadgetHandler, new Properties());
+		registerAllServices(bc, compatibleGadgetsHandler, new Properties());
+		registerAllServices(bc, connectionNotInitHandler, new Properties());
+		registerAllServices(bc, gadgetRegFailedHandler, new Properties());
+		registerAllServices(bc, gadgetRegSuccessHandler, new Properties());
+		registerAllServices(bc, sendDataErrorHandler, new Properties());
+		registerAllServices(bc, garudaCoreErrorHandler, new Properties());
+		registerAllServices(bc, garudaCoreConnTerminHandler, new Properties());
 		
 		registerServiceListener(bc,changeListener,"registerHandler","deregisterHandler", GarudaEventHandler.class);
 		
