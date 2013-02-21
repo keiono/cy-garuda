@@ -5,6 +5,7 @@ import java.util.Properties;
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
 import jp.sbi.garuda.platform.commons.net.GarudaConnectionNotInitializedException;
 import lu.lcsb.garuda.GarudaEventHandler;
+import lu.lcsb.garuda.internal.handlers.ConnectionEstablishedHandler;
 import lu.lcsb.garuda.internal.handlers.LoadDataHandler;
 import lu.lcsb.garuda.internal.task.RegisterGarudaTaskFactory;
 
@@ -61,7 +62,10 @@ public class CyActivator extends AbstractCyActivator {
 		
 		// Create handlers
 		GarudaEventHandler loadDataHandler = new LoadDataHandler(loadNetworkTF, taskManager);
+		GarudaEventHandler connectionHandler = new ConnectionEstablishedHandler(loadNetworkTF, taskManager);
+		
 		registerAllServices(bc, loadDataHandler, new Properties());
+		registerAllServices(bc, connectionHandler, new Properties());
 		
 		registerServiceListener(bc,changeListener,"registerHandler","deregisterHandler", GarudaEventHandler.class);
 		

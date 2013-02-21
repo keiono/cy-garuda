@@ -2,7 +2,6 @@ package lu.lcsb.garuda.internal;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import jp.sbi.garuda.platform.commons.Gadget;
 import lu.lcsb.garuda.GarudaEventHandler;
 
 import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
-import org.cytoscape.work.TaskIterator;
 import org.cytoscape.work.swing.DialogTaskManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,12 +79,6 @@ public class GarudaChangeListener implements PropertyChangeListener {
 				// rest of the code to handle the list of compatible gadgets
 			}
 
-			// Handle the notification for the connection of the backend to the
-			// Core
-			if (garudaPropertyEvt.getPropertyName().equals(GarudaClientBackend.GADGET_CONNECTION_ESTABLISHED_ID)) {
-				System.out.println(garudaPropertyEvt.getFirstProperty().toString());
-			}
-
 			// Handle the notification for the disconnection from the Core
 			if (garudaPropertyEvt.getPropertyName().equals(GarudaClientBackend.CONNECTION_TERMINATED_ID)) {
 				System.out.println(garudaPropertyEvt.getFirstProperty().toString());
@@ -95,7 +87,7 @@ public class GarudaChangeListener implements PropertyChangeListener {
 			// Handle the case that there is no proper initialization of the
 			// Backend
 			if (garudaPropertyEvt.getPropertyName().equals(GarudaClientBackend.CONNECTION_NOT_INITIALIZED_ID)) {
-				System.out.println(garudaPropertyEvt.getFirstProperty().toString());
+				System.out.println("Status" + garudaPropertyEvt.getFirstProperty().toString());
 			}
 
 			// Handle the response that deals with a sent data request
@@ -133,6 +125,7 @@ public class GarudaChangeListener implements PropertyChangeListener {
 				System.out.println("Registration Successful.");
 				System.out.println(garudaPropertyEvt.getFirstProperty().toString());
 			}
+			
 		}
 	}
 
