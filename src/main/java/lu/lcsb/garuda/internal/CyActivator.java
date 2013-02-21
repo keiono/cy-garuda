@@ -1,26 +1,11 @@
 package lu.lcsb.garuda.internal;
 
-import static org.cytoscape.work.ServiceProperties.ACCELERATOR;
-import static org.cytoscape.work.ServiceProperties.COMMAND;
-import static org.cytoscape.work.ServiceProperties.COMMAND_NAMESPACE;
 import static org.cytoscape.work.ServiceProperties.ENABLE_FOR;
 import static org.cytoscape.work.ServiceProperties.ID;
-import static org.cytoscape.work.ServiceProperties.INSERT_SEPARATOR_AFTER;
-import static org.cytoscape.work.ServiceProperties.IN_MENU_BAR;
-import static org.cytoscape.work.ServiceProperties.IN_NETWORK_PANEL_CONTEXT_MENU;
-import static org.cytoscape.work.ServiceProperties.IN_TOOL_BAR;
-import static org.cytoscape.work.ServiceProperties.LARGE_ICON_URL;
 import static org.cytoscape.work.ServiceProperties.MENU_GRAVITY;
-import static org.cytoscape.work.ServiceProperties.NETWORK_GROUP_MENU;
-import static org.cytoscape.work.ServiceProperties.NETWORK_SELECT_MENU;
-import static org.cytoscape.work.ServiceProperties.NODE_EDIT_MENU;
-import static org.cytoscape.work.ServiceProperties.NODE_GROUP_MENU;
-import static org.cytoscape.work.ServiceProperties.NODE_SELECT_MENU;
-import static org.cytoscape.work.ServiceProperties.PREFERRED_ACTION;
 import static org.cytoscape.work.ServiceProperties.PREFERRED_MENU;
 import static org.cytoscape.work.ServiceProperties.TITLE;
 import static org.cytoscape.work.ServiceProperties.TOOLTIP;
-import static org.cytoscape.work.ServiceProperties.TOOL_BAR_GRAVITY;
 
 import java.util.Properties;
 
@@ -127,7 +112,7 @@ public class CyActivator extends AbstractCyActivator {
 		
 
 		// Tasks
-		ExportGenelistTaskFactory exportGenelistTaskFactory = new ExportGenelistTaskFactory(appManager);
+		ExportGenelistTaskFactory exportGenelistTaskFactory = new ExportGenelistTaskFactory(appManager, backendGaurda);
 		
 		Properties exportGenelistTaskFactoryProps = new Properties();
 		exportGenelistTaskFactoryProps.setProperty(ID,"exportGenelistTaskFactory");
@@ -137,5 +122,13 @@ public class CyActivator extends AbstractCyActivator {
 		exportGenelistTaskFactoryProps.setProperty(MENU_GRAVITY,"1.0");
 		exportGenelistTaskFactoryProps.setProperty(TOOLTIP, "Export Node Table Column as Gene List");
 		registerAllServices(bc, exportGenelistTaskFactory, exportGenelistTaskFactoryProps);
+		
+		// Some basic setup for backend...	
+		try {
+			backendGaurda.requestForLoadableGadgets("sbml", "xml");
+			backendGaurda.requestForLoadableGadgets("genelist", "txt");
+		} catch (GarudaConnectionNotInitializedException e) {
+			logger.error("Could not connect to Garuda.", e);
+		}
 	}
 }
