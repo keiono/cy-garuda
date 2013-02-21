@@ -38,6 +38,7 @@ public class LoadDataHandler implements GarudaEventHandler {
 		Gadget theOriginGadget = (Gadget) event.getFirstProperty();
 		String theFilePath = (String) event.getSecondProperty();
 
+		// TODO: handle multiple file types - SBML, genelist, and maybe CSV as table.
 		File sbml = new File(theFilePath);
 
 		final TaskIterator ti = loadNetworkTF.createTaskIterator(sbml);
