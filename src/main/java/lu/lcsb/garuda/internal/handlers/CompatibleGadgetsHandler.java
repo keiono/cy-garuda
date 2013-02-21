@@ -36,7 +36,7 @@ public class CompatibleGadgetsHandler implements GarudaEventHandler {
 		Gadget loadableGadget = (Gadget) event.getFirstProperty();
 		String launchPathofGadget = (String) event.getSecondProperty();
 		List<Gadget> listOfCompatibleGadgets = garudaBackend.getCompatibleGadgetList();
-		
+
 		// rest of the code to handle the list of compatible gadgets
 		logger.info("End of Compatible_Gadgets_Handler");
 	}

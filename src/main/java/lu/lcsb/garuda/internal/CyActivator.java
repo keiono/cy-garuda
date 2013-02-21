@@ -1,5 +1,12 @@
 package lu.lcsb.garuda.internal;
 
+import static org.cytoscape.work.ServiceProperties.ENABLE_FOR;
+import static org.cytoscape.work.ServiceProperties.ID;
+import static org.cytoscape.work.ServiceProperties.MENU_GRAVITY;
+import static org.cytoscape.work.ServiceProperties.PREFERRED_MENU;
+import static org.cytoscape.work.ServiceProperties.TITLE;
+import static org.cytoscape.work.ServiceProperties.TOOLTIP;
+
 import java.util.Properties;
 
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
@@ -47,6 +54,7 @@ public class CyActivator extends AbstractCyActivator {
 		final CyProperty<Properties> cytoscapePropertiesServiceRef = getService(bc, CyProperty.class,
 				"(cyPropertyName=cytoscape3.props)");
 		final LoadNetworkFileTaskFactory loadNetworkTF = getService(bc, LoadNetworkFileTaskFactory.class);
+		final CyApplicationManager appManager = getService(bc, CyApplicationManager.class);
 
 		// Garuda service objects
 		final GarudaLauncher garudaLauncher = new GarudaLauncher(version);
@@ -99,5 +107,25 @@ public class CyActivator extends AbstractCyActivator {
 		
 		registerServiceListener(bc,changeListener,"registerHandler","deregisterHandler", GarudaEventHandler.class);
 		
+
+		// Tasks
+		ExportGenelistTaskFactory exportGenelistTaskFactory = new ExportGenelistTaskFactory(appManager, backendGaurda);
+		
+		Properties exportGenelistTaskFactoryProps = new Properties();
+		exportGenelistTaskFactoryProps.setProperty(ID,"exportGenelistTaskFactory");
+		exportGenelistTaskFactoryProps.setProperty(PREFERRED_MENU,"Tools.Garuda.Send");
+		exportGenelistTaskFactoryProps.setProperty(TITLE,"Gene List to...");
+		exportGenelistTaskFactoryProps.setProperty(ENABLE_FOR,"network");
+		exportGenelistTaskFactoryProps.setProperty(MENU_GRAVITY,"1.0");
+		exportGenelistTaskFactoryProps.setProperty(TOOLTIP, "Export Node Table Column as Gene List");
+		registerAllServices(bc, exportGenelistTaskFactory, exportGenelistTaskFactoryProps);
+		
+		// Some basic setup for backend...	
+		try {
+			backendGaurda.requestForLoadableGadgets("sbml", "xml");
+			backendGaurda.requestForLoadableGadgets("genelist", "txt");
+		} catch (GarudaConnectionNotInitializedException e) {
+			logger.error("Could not connect to Garuda.", e);
+		}
 	}
 }
