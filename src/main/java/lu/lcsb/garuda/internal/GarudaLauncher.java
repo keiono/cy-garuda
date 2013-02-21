@@ -58,7 +58,7 @@ public class GarudaLauncher {
 		inffs.add(new FileFormat("txt", "genelist"));
 
 		categories.add("Visualization");
-		categories.add("Network Analysis");
+		categories.add("Analytics");
 
 		icon = createTempFiles(ICON_NAME, ICON_DIR).toString();
 		screenshots.add(createTempFiles(SS_NAME, SS_DIR).toString());
