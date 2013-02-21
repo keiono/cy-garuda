@@ -1,27 +1,5 @@
 package lu.lcsb.garuda.internal;
 
-import static org.cytoscape.work.ServiceProperties.ACCELERATOR;
-import static org.cytoscape.work.ServiceProperties.COMMAND;
-import static org.cytoscape.work.ServiceProperties.COMMAND_NAMESPACE;
-import static org.cytoscape.work.ServiceProperties.ENABLE_FOR;
-import static org.cytoscape.work.ServiceProperties.ID;
-import static org.cytoscape.work.ServiceProperties.INSERT_SEPARATOR_AFTER;
-import static org.cytoscape.work.ServiceProperties.IN_MENU_BAR;
-import static org.cytoscape.work.ServiceProperties.IN_NETWORK_PANEL_CONTEXT_MENU;
-import static org.cytoscape.work.ServiceProperties.IN_TOOL_BAR;
-import static org.cytoscape.work.ServiceProperties.LARGE_ICON_URL;
-import static org.cytoscape.work.ServiceProperties.MENU_GRAVITY;
-import static org.cytoscape.work.ServiceProperties.NETWORK_GROUP_MENU;
-import static org.cytoscape.work.ServiceProperties.NETWORK_SELECT_MENU;
-import static org.cytoscape.work.ServiceProperties.NODE_EDIT_MENU;
-import static org.cytoscape.work.ServiceProperties.NODE_GROUP_MENU;
-import static org.cytoscape.work.ServiceProperties.NODE_SELECT_MENU;
-import static org.cytoscape.work.ServiceProperties.PREFERRED_ACTION;
-import static org.cytoscape.work.ServiceProperties.PREFERRED_MENU;
-import static org.cytoscape.work.ServiceProperties.TITLE;
-import static org.cytoscape.work.ServiceProperties.TOOLTIP;
-import static org.cytoscape.work.ServiceProperties.TOOL_BAR_GRAVITY;
-
 import java.util.Properties;
 
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
@@ -38,10 +16,8 @@ import lu.lcsb.garuda.internal.handlers.errors.GadgetRegistrationErrorHandler;
 import lu.lcsb.garuda.internal.handlers.errors.GarudaCoreConnTerminatedHandler;
 import lu.lcsb.garuda.internal.handlers.errors.GarudaCoreErrorHandler;
 import lu.lcsb.garuda.internal.handlers.errors.SendDataErrorHandler;
-import lu.lcsb.garuda.internal.task.ExportGenelistTaskFactory;
 import lu.lcsb.garuda.internal.task.RegisterGarudaTaskFactory;
 
-import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.application.CyVersion;
 import org.cytoscape.property.CyProperty;
 import org.cytoscape.service.util.AbstractCyActivator;
@@ -71,8 +47,7 @@ public class CyActivator extends AbstractCyActivator {
 		final CyProperty<Properties> cytoscapePropertiesServiceRef = getService(bc, CyProperty.class,
 				"(cyPropertyName=cytoscape3.props)");
 		final LoadNetworkFileTaskFactory loadNetworkTF = getService(bc, LoadNetworkFileTaskFactory.class);
-		final CyApplicationManager appManager = getService(bc, CyApplicationManager.class);
-		
+
 		// Garuda service objects
 		final GarudaLauncher garudaLauncher = new GarudaLauncher(version);
 		final GarudaClientBackend backendGaurda = garudaLauncher.getClientBackend();
@@ -123,19 +98,6 @@ public class CyActivator extends AbstractCyActivator {
 		registerAllServices(bc, sendDataSuccessHandler, new Properties());
 		
 		registerServiceListener(bc,changeListener,"registerHandler","deregisterHandler", GarudaEventHandler.class);
-
 		
-
-		// Tasks
-		ExportGenelistTaskFactory exportGenelistTaskFactory = new ExportGenelistTaskFactory(appManager);
-		
-		Properties exportGenelistTaskFactoryProps = new Properties();
-		exportGenelistTaskFactoryProps.setProperty(ID,"exportGenelistTaskFactory");
-		exportGenelistTaskFactoryProps.setProperty(PREFERRED_MENU,"Tools.Garuda.Send");
-		exportGenelistTaskFactoryProps.setProperty(TITLE,"Gene List to...");
-		exportGenelistTaskFactoryProps.setProperty(ENABLE_FOR,"network");
-		exportGenelistTaskFactoryProps.setProperty(MENU_GRAVITY,"1.0");
-		exportGenelistTaskFactoryProps.setProperty(TOOLTIP, "Export Node Table Column as Gene List");
-		registerAllServices(bc, exportGenelistTaskFactory, exportGenelistTaskFactoryProps);
 	}
 }

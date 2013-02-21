@@ -32,6 +32,7 @@ public class GarudaChangeListener implements PropertyChangeListener {
 		this.taskManager = taskManager;
 
 		handlers = new HashMap<String, GarudaEventHandler>();
+		
 	}
 
 	public void registerHandler(final GarudaEventHandler handler, Map props) {
