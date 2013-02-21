@@ -27,9 +27,10 @@ public class SendDataErrorHandler implements GarudaEventHandler {
 
 	@Override
 	public void handleEvent(GarudaBackendPropertyChangeEvent event) {
-		logger.error("Got Event from Garuda: " + event.getFirstProperty().toString());
+		logger.info("SendDataErrorHandler invoked through Garuda Event: " + event.getFirstProperty().toString());
 
 		// Code to handle when a send request to Garuda results in an error.
+		logger.error("Send Data Request returned an error message");
 		
 		logger.info("End of Send_Data_Error_Handler");
 	}

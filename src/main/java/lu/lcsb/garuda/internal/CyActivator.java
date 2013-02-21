@@ -10,6 +10,7 @@ import lu.lcsb.garuda.internal.handlers.ConnectionEstablishedHandler;
 import lu.lcsb.garuda.internal.handlers.GadgetRegistrationSuccessHandler;
 import lu.lcsb.garuda.internal.handlers.LoadDataHandler;
 import lu.lcsb.garuda.internal.handlers.LoadGadgetHandler;
+import lu.lcsb.garuda.internal.handlers.SendDataSuccessHandler;
 import lu.lcsb.garuda.internal.handlers.errors.ConnectionNotInitializedHandler;
 import lu.lcsb.garuda.internal.handlers.errors.GadgetRegistrationErrorHandler;
 import lu.lcsb.garuda.internal.handlers.errors.GarudaCoreConnTerminatedHandler;
@@ -78,10 +79,11 @@ public class CyActivator extends AbstractCyActivator {
 		
 		GarudaEventHandler gadgetRegFailedHandler = new GadgetRegistrationErrorHandler(taskManager, backendGaurda);
 		GarudaEventHandler compatibleGadgetsHandler = new CompatibleGadgetsHandler(taskManager, backendGaurda);
+		GarudaEventHandler sendDataSuccessHandler = new SendDataSuccessHandler(taskManager, backendGaurda);
 		GarudaEventHandler sendDataErrorHandler = new SendDataErrorHandler(taskManager, backendGaurda);
 		GarudaEventHandler garudaCoreErrorHandler = new GarudaCoreErrorHandler(taskManager, backendGaurda);
 		GarudaEventHandler garudaCoreConnTerminHandler = new GarudaCoreConnTerminatedHandler(taskManager, backendGaurda);
-		
+
 		// Register all services as OSGi service
 		registerAllServices(bc, loadDataHandler, new Properties());
 		registerAllServices(bc, connectionHandler, new Properties());
@@ -93,6 +95,7 @@ public class CyActivator extends AbstractCyActivator {
 		registerAllServices(bc, sendDataErrorHandler, new Properties());
 		registerAllServices(bc, garudaCoreErrorHandler, new Properties());
 		registerAllServices(bc, garudaCoreConnTerminHandler, new Properties());
+		registerAllServices(bc, sendDataSuccessHandler, new Properties());
 		
 		registerServiceListener(bc,changeListener,"registerHandler","deregisterHandler", GarudaEventHandler.class);
 		

@@ -5,7 +5,6 @@ import jp.sbi.garuda.client.backend.listeners.GarudaBackendPropertyChangeEvent;
 import jp.sbi.garuda.platform.commons.Gadget;
 import lu.lcsb.garuda.GarudaEventHandler;
 
-import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
 import org.cytoscape.work.swing.DialogTaskManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class LoadGadgetHandler implements GarudaEventHandler {
 
 	@Override
 	public void handleEvent(GarudaBackendPropertyChangeEvent event) {
-		logger.info("Got Event from Garuda: " + event.getFirstProperty().toString());
+		logger.info("LoadGadgetHandler invoked through Garuda Event: " + event.getFirstProperty().toString());
 		Gadget loadableGadget = (Gadget) event.getFirstProperty();
 		String launchPathofGadget = (String) event.getSecondProperty();
 

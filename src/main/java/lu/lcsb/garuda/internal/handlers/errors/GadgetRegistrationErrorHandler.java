@@ -28,10 +28,10 @@ public class GadgetRegistrationErrorHandler implements GarudaEventHandler {
 
 	@Override
 	public void handleEvent(GarudaBackendPropertyChangeEvent event) {
-		logger.error("Got Event from Garuda: " + event.getFirstProperty().toString());
-		logger.error("Garuda Gadget Registration Failed.");
-
+		logger.info("GadgetRegistrationErrorHandler invoked through Garuda Event: " + event.getFirstProperty().toString());
+		
 		// Code to handle error when registering gadget to Garuda.
+		logger.error("Garuda Gadget Registration Failed.");
 		
 		logger.info("End of Gadget_Registration_Error_Handler");
 	}

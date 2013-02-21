@@ -24,8 +24,10 @@ public class ConnectionNotInitializedHandler implements GarudaEventHandler {
 
 	@Override
 	public void handleEvent(GarudaBackendPropertyChangeEvent event) {
-		logger.error("Got Event from Garuda: " + event.getFirstProperty().toString());
+		logger.info("ConnectionNotInitializedHandler invoked through Garuda Event: " + event.getFirstProperty().toString());
 
+		// Code to handle error when connection could not be initialized.
+		logger.error("Connection to Garuda could not be initialized.");
 		
 		logger.info("End of Connection_Not_Initialized_Handler");
 	}

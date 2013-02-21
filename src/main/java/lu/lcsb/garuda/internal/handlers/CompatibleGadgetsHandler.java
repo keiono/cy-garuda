@@ -31,7 +31,7 @@ public class CompatibleGadgetsHandler implements GarudaEventHandler {
 
 	@Override
 	public void handleEvent(GarudaBackendPropertyChangeEvent event) {
-		logger.info("Got Event from Garuda: " + event.getFirstProperty().toString());
+		logger.info("CompatibleGadgetsHandler invoked through Garuda Event: " + event.getFirstProperty().toString());
 		
 		Gadget loadableGadget = (Gadget) event.getFirstProperty();
 		String launchPathofGadget = (String) event.getSecondProperty();

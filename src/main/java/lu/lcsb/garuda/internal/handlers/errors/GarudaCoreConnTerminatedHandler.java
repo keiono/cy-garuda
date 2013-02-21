@@ -28,9 +28,10 @@ public class GarudaCoreConnTerminatedHandler implements GarudaEventHandler {
 
 	@Override
 	public void handleEvent(GarudaBackendPropertyChangeEvent event) {
-		logger.error("Got Event from Garuda: " + event.getFirstProperty().toString());
+		logger.info("GarudaCoreConnTerminatedHandler invoked through Garuda Event: " + event.getFirstProperty().toString());
 
 		// Code to handle the case that the Garuda Core disconnects / crashes.
+		logger.error("Connection to Garuda has been terminated.");
 		
 		logger.info("End of Garuda_Core_Conn_Terminated_Handler");
 	}

@@ -25,7 +25,7 @@ public class ConnectionEstablishedHandler implements GarudaEventHandler {
 
 	@Override
 	public void handleEvent(GarudaBackendPropertyChangeEvent event) {
-		logger.info("Got Event from Garuda: " + event.getFirstProperty().toString());
+		logger.info("ConnectionEstablishedHandler invoked through Garuda Event: " + event.getFirstProperty().toString());
 			
 		logger.info("End of Connection_Established_Handler");
 	}

@@ -3,12 +3,10 @@ package lu.lcsb.garuda.internal;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import jp.sbi.garuda.client.backend.GarudaClientBackend;
 import jp.sbi.garuda.client.backend.listeners.GarudaBackendPropertyChangeEvent;
-import jp.sbi.garuda.platform.commons.Gadget;
 import lu.lcsb.garuda.GarudaEventHandler;
 
 import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
@@ -55,7 +53,7 @@ public class GarudaChangeListener implements PropertyChangeListener {
 		if (evt instanceof GarudaBackendPropertyChangeEvent) {
 			final GarudaBackendPropertyChangeEvent garudaPropertyEvt = (GarudaBackendPropertyChangeEvent) evt;
 
-			logger.info("Received Property Change Call");
+			logger.info("Received Property Change Call. Invoking corresponding handler...");
 			
 			final GarudaEventHandler handler = getHandler(garudaPropertyEvt.getPropertyName());
 			if(handler == null) {
@@ -64,15 +62,6 @@ public class GarudaChangeListener implements PropertyChangeListener {
 			} else {
 				handler.handleEvent(garudaPropertyEvt);
 			}
-
-			// Handle the response that deals with a sent data request
-			// successfully
-			if (garudaPropertyEvt.getPropertyName().equals(GarudaClientBackend.SENT_DATA_RECEIVED_RESPONSE)) {
-				System.out.println(garudaPropertyEvt.getFirstProperty().toString());
-			}
-
-
 		}
 	}
-
 }
